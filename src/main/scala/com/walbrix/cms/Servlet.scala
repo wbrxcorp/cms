@@ -75,7 +75,9 @@ class Servlet extends HttpServlet {
   private def serveStaticFile(file:File, response:HttpServletResponse):Unit = {
     val suffix = file.getName.replaceFirst("^.*\\.(.+)$", "$1")
     produceCacheControlHeaders(file, response)
-    response.setContentType(mimeTypes.get(suffix).getOrElse("text/html"))
+    val contentType = mimeTypes.get(suffix).getOrElse("text/plain")
+    response.setContentType(contentType)
+    if (contentType.startsWith("text/")) response.setCharacterEncoding("UTF-8")
     using(response.getOutputStream) { out =>
       using(new java.io.FileInputStream(file))(IOUtils.copy(_, response.getOutputStream))
     }
@@ -105,6 +107,7 @@ class Servlet extends HttpServlet {
     val renderedContent = jinjava.render(s"""{% include "${template}" %}""", (params + ("content"->content)).asJava)
     produceCacheControlHeaders(markdownFile, response)
     response.setContentType("text/html")
+    response.setCharacterEncoding("UTF-8")
     using(response.getWriter)(_.write(renderedContent))
   }
 
