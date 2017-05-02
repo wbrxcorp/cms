@@ -1,9 +1,10 @@
 ---
-title: はろー
+title: ワルブリックス株式会社 新Webサイト建設予定地
 ---
-# Hello, わーるど!
 
-![エビフライトライアングル](pic.jpg "サンプル")
+ここはまだ工事中です。こちらへどうぞ → [ワルブリックス株式会社](https://www.walbrix.com/jp/)
+
+![ゴルゴ](pic.jpg "サンプル")
 
 ```c
 #include <stdio.h>
