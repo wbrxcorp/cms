@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Context>
+    <Environment name="webapp.config.directory" type="java.lang.String" value="${catalina.base}/conf"/>
+</Context>
+
