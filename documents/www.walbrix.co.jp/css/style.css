@@ -267,6 +267,23 @@ body
     text-shadow: #000 2px 2px 10px;
 }
 
+.jumbotron.product
+{
+  background-image: url('/image/cover2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.jumbotron.aboutus
+{
+  background-image: url('/image/cover3.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: right;
+}
+
 section.section
 {
     padding: 3rem 0;
