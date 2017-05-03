@@ -275,6 +275,11 @@ section.section.section-default
 {
     background-color: #fff;
 }
+section.section.section-default dl,
+section.section.section-default ul
+{
+    margin-bottom: 3rem;
+}
 section.section.section-inverse
 {
     background-color: #fff5eb;
@@ -315,7 +320,7 @@ footer .copyright
     font-size: 24px;
 }
 
-#md {
+#md, #address {
   margin-top: -4.35rem;
   padding-top: 4.35rem;
 }

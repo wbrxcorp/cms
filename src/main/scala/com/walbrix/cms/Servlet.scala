@@ -15,7 +15,8 @@ class Servlet extends HttpServlet {
   flexmarkOptions.setFrom(com.vladsch.flexmark.parser.ParserEmulationProfile.GITHUB_DOC)
   val flexmarkExtensions = Set(
     com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension.create(),
-    com.vladsch.flexmark.ext.tables.TablesExtension.create()
+    com.vladsch.flexmark.ext.tables.TablesExtension.create(),
+    com.vladsch.flexmark.ext.definition.DefinitionExtension.create()
   ).asJava
 
   val mimeTypes = Map(
