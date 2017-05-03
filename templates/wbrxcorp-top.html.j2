@@ -1,0 +1,23 @@
+{% extends "www.walbrix.co.jp.html.j2" %}
+{%block content%}
+<div class="jumbotron top">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 outline">
+        <h1 class="display-4">ここにコピー</h1>
+        <p>"Honoka" をベースに作っています。</p>
+        <div>
+          <a href="//github.com/wbrxcorp/cms" class="btn btn-warning btn-lg"><i class="fa fa-github-alt"></i> このサイトのソース</a>
+          <a href="/aboutus.html#md" class="btn btn-primary btn-lg">代表プロフィール</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section section-default point">
+  <div class="container">
+      {{content}}
+  </div>
+</section>
+{%endblock%}

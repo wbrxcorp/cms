@@ -7,11 +7,16 @@ import org.apache.commons.io.IOUtils
 
 class Servlet extends HttpServlet {
 
-  var prefix:Option[String] = _
+  var rootPrefix:Option[String] = _
   var config:com.typesafe.config.Config = _
   var documentPath:File = _
   var resourceLocator:com.hubspot.jinjava.loader.ResourceLocator = _
-  val yamlFrontMatterExtension = com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension.create()
+  val flexmarkOptions = new com.vladsch.flexmark.util.options.MutableDataSet()
+  flexmarkOptions.setFrom(com.vladsch.flexmark.parser.ParserEmulationProfile.GITHUB_DOC)
+  val flexmarkExtensions = Set(
+    com.vladsch.flexmark.ext.yaml.front.matter.YamlFrontMatterExtension.create(),
+    com.vladsch.flexmark.ext.tables.TablesExtension.create()
+  ).asJava
 
   val mimeTypes = Map(
     "css"->"text/css",
@@ -56,7 +61,7 @@ class Servlet extends HttpServlet {
 
   override def init:Unit = {
     // prefix
-    prefix = Option(getServletContext.getInitParameter(s"${getServletName}.prefix"))
+    rootPrefix = Option(getServletContext.getInitParameter(s"${getServletName}.prefix"))
     config = edu.gatech.gtri.typesafeconfigextensions.forwebapps.WebappConfigs.webappConfigFactory(this.getServletContext).load
     documentPath = new File(config.getString("cms.document_path"))
     resourceLocator = new com.hubspot.jinjava.loader.FileLocator(new java.io.File(config.getString("cms.template_path")))
@@ -83,28 +88,27 @@ class Servlet extends HttpServlet {
     }
   }
 
-  private def serveMarkdownAsHtml(markdownFile:File, response:HttpServletResponse):Unit = {
-    val options = new com.vladsch.flexmark.util.options.MutableDataSet()
-    val extensions = new java.util.HashSet[com.vladsch.flexmark.Extension]()
-    extensions.add(yamlFrontMatterExtension)
-    options.setFrom(com.vladsch.flexmark.parser.ParserEmulationProfile.GITHUB_DOC)
-    val parser = com.vladsch.flexmark.parser.Parser.builder(options).extensions(extensions).build
+  private def serveMarkdownAsHtml(name:String, markdownFile:File, request:HttpServletRequest, response:HttpServletResponse):Unit = {
+    val parser = com.vladsch.flexmark.parser.Parser.builder(flexmarkOptions).extensions(flexmarkExtensions).build
     val document = parser.parse(IOUtils.toString(new java.io.FileInputStream(markdownFile), "UTF-8"))
     val visitor = new com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor()
+    val content = com.vladsch.flexmark.html.HtmlRenderer.builder(flexmarkOptions).extensions(flexmarkExtensions).build.render(document)
     visitor.visit(document)
     val params = visitor.getData.asScala.map { case (key, value) =>
       (key, value.asScala.toSeq match {
         case Seq(x) => x
         case x => x.asJava
       })
-    }.toMap
-
-    val content = com.vladsch.flexmark.html.HtmlRenderer.builder(options).build.render(document)
+    }.toMap ++ Map (
+      "request"->request,
+      "content"->content,
+      "name"->name
+    )
 
     val jinjava = new com.hubspot.jinjava.Jinjava()
     jinjava.setResourceLocator(resourceLocator)
     val template = params.get("template").getOrElse("default.html")
-    val renderedContent = jinjava.render(s"""{% include "${template}" %}""", (params + ("content"->content)).asJava)
+    val renderedContent = jinjava.render(s"""{% include "${template}" %}""", params.asJava)
     produceCacheControlHeaders(markdownFile, response)
     response.setContentType("text/html")
     response.setCharacterEncoding("UTF-8")
@@ -114,31 +118,42 @@ class Servlet extends HttpServlet {
   override protected def doGet(req:HttpServletRequest, res:HttpServletResponse):Unit = {
     try {
       if (!documentPath.isDirectory) throw new FileNotFoundException(s"Document path ${documentPath} not found")
+
       // else
-      val vhostName = prefix.getOrElse(req.getServerName)
       val requestURI = req.getRequestURI
-      val vhostDir = new File(documentPath, vhostName)
-      val requested = new File(if (vhostDir.isDirectory) vhostDir else documentPath, requestURI) match {
-        case x:File if x.isDirectory => new File(x, "index.html")
-        case x:File => x
+      val suggestedRootPrefix = rootPrefix.getOrElse(req.getServerName)
+
+      // nameを確定する
+      val givenName = (if (new File(documentPath, suggestedRootPrefix).isDirectory) { // ルートプレフィクス候補に該当するディレクトリがあるか？
+        new File(suggestedRootPrefix, requestURI)
+      } else {
+        new File(requestURI)
+      }).getPath
+
+      val name = if (new File(documentPath, givenName).isDirectory) {
+        new File(givenName, "index.html").getPath
+      } else {
+        givenName
       }
 
-      if (requested.isFile) {
-        if (isCacheValid(requested, req)) {
+      val fileToServe = new File(documentPath, name)
+
+      if (fileToServe.isFile) {
+        if (isCacheValid(fileToServe, req)) {
           res.setStatus(HttpServletResponse.SC_NOT_MODIFIED)
         } else {
-          serveStaticFile(requested, res)
+          serveStaticFile(fileToServe, res)
         }
         return
       }
 
-      if (requested.getName.endsWith(".html")) {
-        val requestedMd = new File(requested.getParentFile, requested.getName.replaceFirst("\\.html$", ".md"))
-        if (requestedMd.isFile) {
-          if (isCacheValid(requestedMd, req)) {
+      if (name.endsWith(".html")) {
+        val mdFileToServe = new File(fileToServe.getPath.replaceFirst("\\.html$", ".md"))
+        if (mdFileToServe.isFile) {
+          if (isCacheValid(mdFileToServe, req)) {
             res.setStatus(HttpServletResponse.SC_NOT_MODIFIED)
           } else {
-            serveMarkdownAsHtml(requestedMd, res)
+            serveMarkdownAsHtml(name, mdFileToServe, req, res)
           }
           return
         }
