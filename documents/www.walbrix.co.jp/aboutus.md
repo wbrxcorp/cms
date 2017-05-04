@@ -3,6 +3,7 @@ title: 会社概要
 template: www.walbrix.co.jp/page.html.j2
 summary: ワルブリックス株式会社の会社概要、連絡先、代表者プロフィールです
 jumbotron_class: aboutus
+inquiry_address: info17@walbrix.co.jp
 ---
 
 社名

@@ -292,6 +292,19 @@ body
   background-position: center center;
   text-align: right;
 }
+.jumbotron.oscar
+{
+  min-height: 380px;
+  padding-top: 130px;
+
+  font-weight: bold;
+  color:#f0f0f0;
+
+  background-image: url('/image/searchonahand.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 
 section.section
 {
@@ -354,7 +367,11 @@ footer .copyright
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 24px;
 }
-
+img {
+  display: inline-block;
+  height: auto;
+  max-width: 100%;
+}
 #md, #address {
   margin-top: -4.35rem;
   padding-top: 4.35rem;

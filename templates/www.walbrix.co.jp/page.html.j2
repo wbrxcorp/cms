@@ -36,7 +36,7 @@
     </nav>
   </header>
 
-  {%block content%}
+  {%block headings%}
   <div class="jumbotron{%if jumbotron_class%} {{jumbotron_class}}{%endif%}">
     <div class="container">
       <h1>{{title}}</h1>
@@ -53,7 +53,9 @@
       </ul>
     </div>
   </aside>
+  {%endblock%}
 
+  {%block content%}
   <section class="section section-default">
     <div class="container">
       {{content}}
