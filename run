@@ -1,0 +1,5 @@
+#!/bin/sh
+saved_stty=$(stty -g 2>/dev/null)
+sbt "run $@"
+stty $saved_stty
+

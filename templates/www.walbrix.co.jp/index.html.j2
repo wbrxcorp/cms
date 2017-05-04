@@ -1,0 +1,66 @@
+{%extends "www.walbrix.co.jp/page.html.j2"%}
+{%block content%}
+<div class="jumbotron top">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 outline">
+        <h1 class="display-5"><span style="display:inline-block;">"営業窓口"は</span><span style="display:inline-block;">いません。</span></h1>
+        <p>いつも ITプロフェッショナルが直接対応します。</p>
+        <div>
+          <a href="//github.com/wbrxcorp/cms" class="btn btn-warning btn-lg"><i class="fa fa-github-alt"></i> このサイトのソース</a>
+          <a href="/aboutus.html#md" class="btn btn-primary btn-lg"><i class="fa fa-user" aria-hidden="true"></i> 代表プロフィール</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<aside class="social">
+  <div class="social-button">
+    <ul>
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-lang="ja" data-dnt="true">ツイート</a></li>
+      <li><div class="fb-like" data-href="{{request.requestURL}}" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div></li>
+      <li><a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;"></a></li>
+    </ul>
+  </div>
+</aside>
+
+{{content}}
+
+<section class="section section-default">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 subtitle">
+        <h2>ワルブリックス株式会社とは</h2>
+        <p>コンピュータとネットワークを、よりあなたにフレンドリーな仕事道具に仕立てるお手伝いをしています。</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <div>
+          <h4>IT技術者の会社です</h4>
+          <p>当社は営業スタッフを一切抱えておらず、技術者がお客様と直接対話させていただいております。したがって、無駄な伝言ゲームを発生させないうえ、純粋な技術料金のみにてサービスを提供させていただくことが可能となっています。</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div>
+          <h4>話はわかるつもりです</h4>
+          <p>技術者だからといって難しい話ばかりはいたしません。それぞれのお客様のバックグラウンドや規模、ITスキルに合わせた目線でのご提案やサービス提供を行っております。</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div>
+          <h4>〜たとえば〜</h4>
+          <p>個人商店様も法律事務所様も街工場様も市場調査会社様も気鋭の Webサイト制作会社様も人気アニメのCG制作会社様も国営や元国営の有名企業様も、それぞれ全く違う背景をお持ちですが等しく当社のお客様です。</p>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div>
+          <h4>何ができるのか</h4>
+          <p>主に Linuxサーバーやネットワークの構築、運用サポート、トラブルシューティングを行っています。とはいえ、「お客様のしたいことを出来るようにする」ために使う道具がたまたま Linuxだというだけですので、お客様が Linuxを意識することはあまりありません。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{%endblock%}

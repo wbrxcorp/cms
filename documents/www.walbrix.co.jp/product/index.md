@@ -1,6 +1,6 @@
 ---
 title: 製品とサービス
-template: www.walbrix.co.jp.html.j2
+template: www.walbrix.co.jp/page.html.j2
 summary: ワルブリックス株式会社の製品とサービスをご紹介します
 jumbotron_class: product
 ---

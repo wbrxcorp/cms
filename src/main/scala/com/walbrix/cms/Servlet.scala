@@ -132,6 +132,11 @@ class Servlet extends HttpServlet {
       }).getPath
 
       val name = if (new File(documentPath, givenName).isDirectory) {
+        if (!requestURI.endsWith("/")) {
+          // ディレクトリに対するアクセスの場合で、/ で終端していない場合は終端させるようリダイレクトする
+          res.sendRedirect(s"${req.getRequestURL}/")
+          return
+        }
         new File(givenName, "index.html").getPath
       } else {
         givenName
@@ -148,7 +153,7 @@ class Servlet extends HttpServlet {
         return
       }
 
-      if (name.endsWith(".html")) {
+      if (name.endsWith(".html")) { // 存在しない.htmlファイルにリクエストには代わりに対応するMarkdownファイルをHTML変換して返す
         val mdFileToServe = new File(fileToServe.getPath.replaceFirst("\\.html$", ".md"))
         if (mdFileToServe.isFile) {
           if (isCacheValid(mdFileToServe, req)) {

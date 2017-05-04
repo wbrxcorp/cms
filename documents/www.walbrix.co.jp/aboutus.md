@@ -1,6 +1,6 @@
 ---
 title: 会社概要
-template: www.walbrix.co.jp.html.j2
+template: www.walbrix.co.jp/page.html.j2
 summary: ワルブリックス株式会社の会社概要、連絡先、代表者プロフィールです
 jumbotron_class: aboutus
 ---
@@ -20,6 +20,11 @@ jumbotron_class: aboutus
 事業内容
 : コンピュータソフトウェアの開発・システムの構築・保守及びコンサルティング
 
+所在地
+: 〒101-0052<br>東京都千代田区神田小川町3-11-2<br>インペリアル御茶の水219<br>[<i class="fa fa-map-marker" aria-hidden="true"></i>Google Mapsで見る](https://www.google.co.jp/maps/place/%E3%83%AF%E3%83%AB%E3%83%96%E3%83%AA%E3%83%83%E3%82%AF%E3%82%B9%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE/@35.6941133,139.7601263,17z/data=!3m1!4b1!4m5!3m4!1s0x60188c1005d6cf15:0xa11b6bd7e3303594!8m2!3d35.694109!4d139.762315)
+
+連絡先
+: Tel. 03-5283-8162<br>Fax. 03-5283-8169<br>Email. <a href="mailto:info17@walbrix.co.jp">info17@walbrix.co.jp</a>
 
 ## 沿革
 
@@ -27,7 +32,7 @@ jumbotron_class: aboutus
 : 嶋田 大貴の個人事業 （屋号 STBBS.NET） を開業
 
 2006年12月
-: [現住所](#address)へ移転
+: 現住所へ移転
 
 2008年1月4日
 : 法人 STBBS.NET合同会社 へ改組
@@ -37,27 +42,6 @@ jumbotron_class: aboutus
 
 2012年10月
 : 製品名にちなみ、ワルブリックス株式会社へ社名を変更
-
-
-<h2 id="address">連絡先</h2>
-
-〒101-0052<br>
-東京都千代田区神田小川町3-11-2<br>
-インペリアル御茶の水219<br>
-
-<i class="fa fa-phone"></i> 03-5283-8162<br>
-<i class="fa fa-envelope"></i> info@jp.walbrix.com
-
-### 交通アクセス
-
-靖国通り沿い、スターバックス小川町店より小道を挟んで向かい側にあるレンガ色をしたマンションのエレベーターで2Fに上がり、左側の突き当たり右手となります。
-
-<iframe style="width:100%;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.3049216641343!2d139.760126316059!3d35.694113336871375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188c1005d6cf15%3A0xa11b6bd7e3303594!2z44Ov44Or44OW44Oq44OD44Kv44K55qCq5byP5Lya56S-!5e0!3m2!1sja!2sjp!4v1493791885189" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-
-- 都営新宿線 小川町駅,千代田線 新御茶ノ水駅,丸の内線 淡路町駅... B7出口 徒歩3分
-- 都営新宿線/三田線/半蔵門線 神保町駅... A9出口 徒歩4分
-- JR総武線 御茶ノ水駅 ... 聖橋口 徒歩10分
-- JR総武線 秋葉原駅 ... 電気街口 徒歩15分
 
 <h2 id="md">代表プロフィール</h2>
 

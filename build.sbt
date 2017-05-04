@@ -5,6 +5,17 @@ name := "cms"
 scalaVersion := "2.12.2"
 version := "0.20170501"
 
+val sbtcp = taskKey[Unit]("sbt-classpath")
+
+sbtcp := {
+  val files: Seq[File] = (fullClasspath in Compile).value.files
+  val sbtClasspath : String = files.map(x => x.getAbsolutePath).mkString(":")
+  println("Set SBT classpath to 'sbt-classpath' environment variable")
+  System.setProperty("sbt-classpath", sbtClasspath)
+}
+
+run <<= (run in Compile).dependsOn(sbtcp)
+
 libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.12.2" // http://mvnrepository.com/artifact/org.scala-lang/scala-compiler
 libraryDependencies += "org.flywaydb" % "flyway-core" % "4.1.2" // http://mvnrepository.com/artifact/org.flywaydb/flyway-core
 libraryDependencies += "commons-io" % "commons-io" % "2.5" // http://mvnrepository.com/artifact/commons-io/commons-io
