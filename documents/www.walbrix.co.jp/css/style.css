@@ -305,6 +305,10 @@ body
   background-repeat: no-repeat;
   background-position: center center;
 }
+.jumbotron.simple
+{
+  padding-bottom: 0;
+}
 
 section.section
 {
