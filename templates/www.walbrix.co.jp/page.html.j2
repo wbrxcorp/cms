@@ -98,7 +98,7 @@
       <div class="row">
         <div class="col-xs-12 text-xs-center copyright">
           <p>&copy; 2017 Walbrix Corporation</p>
-          {%if !optout%}<p><a href="/optout/{{request.requestURL|urlencode}}">Opt-out from Analytics</p>{%endif%}
+          {%if !optout%}<p><a href="/optout/?redirectTo={{request.requestURL|urlencode}}">Opt-out from Analytics</p>{%endif%}
         </div>
       </div>
     </div>
