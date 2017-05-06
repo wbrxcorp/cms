@@ -1,0 +1,40 @@
+{%extends "www.walbrix.co.jp/page.html.j2"%}
+{%block additional_scripts%}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-resource.min.js"></script>
+<script>
+angular.module("MyApp", ["ngResource"])
+.run(["$rootScope", "$resource", function($scope, $resource) {
+  var inquiry = $resource("/inquiry");
+  inquiry.get();
+  $scope.submit = function() {
+    $scope.foo = "bar";
+  }
+}]);
+angular.element(document).ready(function() {
+  angular.bootstrap(document, ['MyApp']);
+});
+</script>
+{%endblock%}
+
+{%block headings%}
+<div class="jumbotron simple">
+  <div class="container">
+    <h1>{{title}}</h1>
+    <p>{{summary}}</p>
+  </div>
+</div>
+{%endblock%}
+
+
+{%block content%}
+<section class="section section-default">
+  <div class="container">
+    <div>{{content}}</div>
+    <form ng-submit="submit()">
+    {%raw%}{{foo}}{%endraw%}
+      <input type="submit" value="送信">
+    </form>
+  </div>
+</section>
+{%endblock%}

@@ -11,7 +11,7 @@ inquiry_address: info17@walbrix.co.jp
 
 所在地
 : 〒101-0052<br>東京都千代田区神田小川町3-11-2 インペリアル御茶の水219<br>[<i class="fa fa-map-marker" aria-hidden="true"></i>Google Mapsで見る](https://www.google.co.jp/maps/place/%E3%83%AF%E3%83%AB%E3%83%96%E3%83%AA%E3%83%83%E3%82%AF%E3%82%B9%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE/@35.6941133,139.7601263,17z/data=!3m1!4b1!4m5!3m4!1s0x60188c1005d6cf15:0xa11b6bd7e3303594!8m2!3d35.694109!4d139.762315)<br>
-Tel. 03-5283-8162<br>Fax. 03-5283-8169
+Tel. 03-5283-8162  Fax. 03-5283-8169
 
 代表者
 : [嶋田 大貴 (代表取締役)](#md)
