@@ -104,7 +104,11 @@ class Servlet extends HttpServlet {
       "request"->request,
       "content"->content,
       "name"->name
-    )
+    ) ++ (Option(request.getCookies) match {
+      case Some(cookies) => Map("cookies" -> cookies.map { cookie => (cookie.getName, cookie ) }.toMap.asJava)
+      case None => Map()
+    })
+
 
     val jinjava = new com.hubspot.jinjava.Jinjava()
     jinjava.setResourceLocator(resourceLocator)

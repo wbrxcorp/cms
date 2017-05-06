@@ -4,14 +4,17 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
          http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-         <servlet>
-         <servlet-name>cms</servlet-name>
-         <servlet-class>com.walbrix.cms.Servlet</servlet-class>
-       </servlet>
+  <listener>
+   <listener-class>org.scalatra.servlet.ScalatraListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>cms</servlet-name>
+    <servlet-class>com.walbrix.cms.Servlet</servlet-class>
+  </servlet>
 
-       <servlet-mapping>
-         <servlet-name>cms</servlet-name>
-         <url-pattern>/*</url-pattern>
-       </servlet-mapping>
+ <servlet-mapping>
+    <servlet-name>cms</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
 
 </web-app>
