@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="//cdn.honokak.osaka/honoka/4.0.0-alpha.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/github.min.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  {%block additional_styles%}{%endblock%}
   <link rel="stylesheet" href="/css/style.css">
   <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.walbrix.com/jp/blog/index.xml" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
@@ -35,13 +36,14 @@
           <ul class="nav navbar-nav">
             <li class="nav-item{%if name.startsWith('www.walbrix.co.jp/product/')%} active{%endif%}"><a href="/product/" class="nav-link">製品とサービス</a></li>
             <li class="nav-item{%if name == 'www.walbrix.co.jp/aboutus.html'%} active{%endif%}"><a href="/aboutus.html" class="nav-link">会社概要</a></li>
-            <li class="nav-item"><a href="https://www.walbrix.com/jp/blog/" class="nav-link">BLOG</a></li>
+            <li class="nav-item{%if name == 'www.walbrix.co.jp/inquiry.html'%} active{%endif%}"><a href="/inquiry.html" class="nav-link">お問い合わせ</a></li>
           </ul>
           <div class="form-inline float-xs-right">
             <a href="https://twitter.com/intent/tweet?url={{request.requestURL|urlencode}}&amp;text={{full_page_title|urlencode}}" class="btn btn-twitter"><i class="fa fa-twitter fa-lg"></i> Tweet</a>
             <a href="http://www.facebook.com/sharer.php?u={{request.requestURL|urlencode}}" class="btn btn-facebook"><i class="fa fa-facebook fa-lg"></i> Share</a>
             <a href="javascript:window.open('http://b.hatena.ne.jp/add?mode=confirm&is_bm=1&title='+escape(document.title)+'&url='+escape(location.href),%20'_blank',%20'width=520,height=600,resizable=1,scrollbars=1');undefined;" class="btn btn-hatebu"><i class="fa fa-hatebu fa-lg"></i> Bookmark</a>
-            <a href="https://github.com/wbrxcorp/cms/blob/master/documents/{{name.replaceFirst('\\.html$', '.md')}}" class="nav-link"><i class="fa fa-github-alt"></i></a>
+            <a href="https://github.com/wbrxcorp/cms/blob/master/documents/{{name.replaceFirst('\\.html$', '.md')}}" class="nav-link"><i class="fa fa-file-text-o" aria-hidden="true"></i></a>
+            <a href="https://github.com/wbrxcorp/cms/blob/master/templates/{{template}}" class="nav-link"><i class="fa fa-code" aria-hidden="true"></i></i></a>
           </div>
         </div>
       </div>
@@ -81,7 +83,7 @@
         <li><a href="#">ページ最上部へ戻る</a></li>
         <li><a href="/aboutus.html">会社概要</a></li>
         <li><a href="/product/">製品とサービス</a></li>
-        <li><a href="https://www.walbrix.com/jp/blog/">BLOG</a></li>
+        <li><a href="/inquiry.html">お問い合わせ</a></li>
       </ul>
     </div>
   </aside>

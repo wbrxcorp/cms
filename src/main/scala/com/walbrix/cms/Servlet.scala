@@ -109,7 +109,14 @@ class Servlet extends HttpServlet {
       case None => Map()
     })
 
-
+/*
+    val queryParams = (params.getOrElse("query_params", Nil) match {
+      case qp:java.util.Collection[String] => qp.asScala
+      case qp:String => Seq(qp)
+    }).map { name =>
+      Option(request.getParameter(name)).map((name, _))
+    }.flatten.toMap
+*/
     val jinjava = new com.hubspot.jinjava.Jinjava()
     jinjava.setResourceLocator(resourceLocator)
     val template = params.get("template").getOrElse("default.html")

@@ -30,6 +30,7 @@ libraryDependencies += "edu.gatech.gtri.typesafeconfig-extensions" % "typesafeco
 libraryDependencies += "com.github.nscala-time" % "nscala-time_2.12" % "2.16.0" // http://mvnrepository.com/artifact/com.github.nscala-time/nscala-time_2.11
 libraryDependencies += "com.github.pathikrit" % "better-files_2.12" % "3.0.0" // http://mvnrepository.com/artifact/com.github.pathikrit/better-files_2.11
 libraryDependencies += "com.h2database" % "h2" % "1.4.195" // http://mvnrepository.com/artifact/com.h2database/h2
+libraryDependencies += "org.apache.commons" % "commons-email" % "1.4"
 
 libraryDependencies ++= Seq(
   "scalikejdbc_2.12","scalikejdbc-syntax-support-macro_2.12" // http://mvnrepository.com/artifact/org.scalikejdbc/scalikejdbc_2.12

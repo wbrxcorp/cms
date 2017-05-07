@@ -1,18 +1,54 @@
 {%extends "www.walbrix.co.jp/page.html.j2"%}
+{%block additional_styles%}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/1.1.0/css/ngDialog.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/1.1.0/css/ngDialog-theme-default.min.css">
+{%endblock%}
 {%block additional_scripts%}
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-resource.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/1.1.0/js/ngDialog.min.js"></script>
 <script>
-angular.module("MyApp", ["ngResource"])
-.run(["$rootScope", "$resource", function($scope, $resource) {
+angular.module("Inquiry", ["ngResource","ngDialog"])
+.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}])
+.run(["$rootScope", "$resource", "ngDialog", function($scope, $resource, ngDialog) {
   var inquiry = $resource("/inquiry");
-  inquiry.get();
+
+  var reset = function() {
+    $scope.inquiry = inquiry.get(function(result) {
+      result.subject = "{{request.getParameter('subject')|escapejs}}";
+      $scope.form.$setUntouched();
+    });
+  };
+
+  var showError = function(message) {
+    ngDialog.open({
+      template: '<p>エラーが発生しました。' + message + '</p>',
+      plain: true
+    });
+  };
+
   $scope.submit = function() {
-    $scope.foo = "bar";
-  }
+    inquiry.save($scope.inquiry, function(result) {
+      if (result.success) {
+        ngDialog.open({
+          template: '<p>お問い合わせを送信しました。</p>',
+          plain: true
+        });
+        reset();
+      } else {
+        showError(result.info);
+      }
+    }, function(result) {
+      showError(result);
+    })
+  };
+
+  reset();
 }]);
 angular.element(document).ready(function() {
-  angular.bootstrap(document, ['MyApp']);
+  angular.bootstrap(document, ['Inquiry']);
 });
 </script>
 {%endblock%}
@@ -26,14 +62,29 @@ angular.element(document).ready(function() {
 </div>
 {%endblock%}
 
-
 {%block content%}
 <section class="section section-default">
   <div class="container">
     <div>{{content}}</div>
-    <form ng-submit="submit()">
-    {%raw%}{{foo}}{%endraw%}
-      <input type="submit" value="送信">
+    <form name="form" ng-submit="submit()">
+      <div class="form-group" ng-class="{'has-danger':form.email.$touched && form.email.$invalid}">
+        <label>メールアドレス</label>
+        <input type="email" class="form-control" name="email" ng-model="inquiry.email" required>
+      </div>
+      <div class="form-group" ng-class="{'has-danger':form.name.$touched && form.name.$invalid}">
+        <label>所属・お名前</label>
+        <input type="text" class="form-control" name="name" ng-model="inquiry.name" required>
+      </div>
+      <div class="form-group">
+        <label>題名 (任意)</label>
+        <input type="text" class="form-control" name="subject" ng-model="inquiry.subject" required>
+      </div>
+      <div class="form-group" ng-class="{'has-danger':form.message.$touched && form.message.$invalid}">
+        <label>お問い合わせ内容</label>
+        <textarea class="form-control" rows="7" name="message" ng-model="inquiry.message" required></textarea>
+      </div>
+      <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> 送信</button>
+      <small ng-show="form.$invalid" class="form-text text-muted">必須項目を全て正しく入力してください</small>
     </form>
   </div>
 </section>
