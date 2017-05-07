@@ -83,7 +83,7 @@
         <li><a href="#">ページ最上部へ戻る</a></li>
         <li><a href="/aboutus.html">会社概要</a></li>
         <li><a href="/product/">製品とサービス</a></li>
-        <li><a href="/inquiry.html">お問い合わせ</a></li>
+        {%if name != "www.walbrix.co.jp/inquiry.html"%}<li><a class="btn btn-secondary" href="/inquiry.html?subject={{title + 'について'|urlencode}}" rel="nofollow"><i class="fa fa-envelope-o" aria-hidden="true"></i> お問い合わせ</a></li>{%endif%}
       </ul>
     </div>
   </aside>
