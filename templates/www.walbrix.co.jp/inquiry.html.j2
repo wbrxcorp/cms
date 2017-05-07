@@ -40,8 +40,8 @@ angular.module("Inquiry", ["ngResource","ngDialog"])
       } else {
         showError(result.info);
       }
-    }, function(result) {
-      showError(result);
+    }, function(response) {
+      showError(response.data);
     })
   };
 
