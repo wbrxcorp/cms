@@ -117,7 +117,7 @@ jumbotron_class: simple
 2010年
 : whitebaseの正式名称を <a href="http://www.walbrix.net">Walbrix</a>とし公開。（<a href="http://www.walbrix.net/geeks.html#ancestry">そのあたりのいきさつ</a>）
 
-: 全文検索エンジン <a href="http://groonga.org/ja/">groonga</a>を使用した Webサイトの開発を始め、いくつかバグを踏んでレポートするなど小さな貢献をする。過去に Sennaを使った案件の時に開発者の方にお会いした事があったのを（自分程度の開発者なんか他にいくらでもいるのに）覚えていて頂いて、後に<a href="http://www.amazon.co.jp/gp/product/4822284611/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4822284611&linkCode=as2&tag=stbbsnet-22">献本まで頂くという</a><img src="http://ir-jp.amazon-adsystem.com/e/ir?t=stbbsnet-22&l=as2&o=9&a=4822284611" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />光栄にあずかる。きちんと自己紹介もしなかったのに事務所の住所まで調べて送って頂いたのは恐縮の限り。
+: 全文検索エンジン <a href="http://groonga.org/ja/">groonga</a>を使用した Webサイトの開発を始め、いくつかバグを踏んでレポートするなど小さな貢献をする。過去に Sennaを使った案件の時に開発者の方にお会いした事があったのを（自分程度の開発者なんか他にいくらでもいるのに）覚えていて頂いて、後に<a href="//www.amazon.co.jp/gp/product/4822284611/ref=as_li_ss_tl?ie=UTF8&camp=247&creative=7399&creativeASIN=4822284611&linkCode=as2&tag=stbbsnet-22">献本まで頂くという</a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=stbbsnet-22&l=as2&o=9&a=4822284611" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />光栄にあずかる。きちんと自己紹介もしなかったのに事務所の住所まで調べて送って頂いたのは恐縮の限り。
 
 2011年
 : ITエンジニアなどというものは所詮十把一絡げのドブサライ扱いであると達観し、受ける仕事を厳選する傾向が強くなる。歳を取ったともいう。<a href="http://ja.wikipedia.org/wiki/プログラマ#.E3.83.97.E3.83.AD.E3.82.B0.E3.83.A9.E3.83.9E.E5.AE.9A.E5.B9.B4.E8.AA.AC">プログラマ35歳定年説</a>というのは、だいたい35歳頃でそれに気付いてしまうことではないか。少なくとも日本では。
