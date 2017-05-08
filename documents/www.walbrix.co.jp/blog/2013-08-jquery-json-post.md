@@ -14,7 +14,7 @@ jumbotron_class: simple
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="name">年齢</label>
+    <label class="control-label" for="age">年齢</label>
     <div class="controls">
       <input id="age" type="text" value="36"/>
     </div>
@@ -35,7 +35,7 @@ jumbotron_class: simple
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="name">年齢</label>
+    <label class="control-label" for="age">年齢</label>
     <div class="controls">
       <input id="age" type="text" value="36"/>
     </div>
