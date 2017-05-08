@@ -113,7 +113,6 @@
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-98637096-1', 'auto');
-    ga('send', 'pageview');
 
     {%if !cookies["_ga"]%}
     ga('set', {
@@ -121,6 +120,8 @@
       'dimension2':'{{request.getHeader("Referer")|escapejs}}'
     });
     {%endif%}
+
+    ga('send', 'pageview');
   </script>
   {%endif%}
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
