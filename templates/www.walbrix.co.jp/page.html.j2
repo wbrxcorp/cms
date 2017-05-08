@@ -70,22 +70,13 @@
   </aside>
   {%endblock%}
 
-  {%if adsense%}
+  {%if adsense and !optout%}
   <aside class="adsense">
     <div class="container">
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-      <!-- レスポンシブ -->
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-7755651108155777"
-           data-ad-slot="1437748144"
-           data-ad-format="auto"></ins>
-      <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+      {%include "adsense.html.j2"%}
     </div>
   </aside>
-  {%endif}%
+  {%endif%}
 
   {%block content%}
   <section class="section section-default">
@@ -94,6 +85,14 @@
     </div>
   </section>
   {%endblock%}
+
+  {%if adsense and !optout%}
+  <aside class="adsense">
+    <div class="container">
+      {%include "adsense.html.j2"%}
+    </div>
+  </aside>
+  {%endif%}
 
   <aside class="bottom-links">
     <div class="container">
