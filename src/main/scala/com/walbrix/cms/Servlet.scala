@@ -58,6 +58,8 @@ class Servlet extends HttpServlet {
     "zip"->"application/zip"
   )
 
+  val datePattern = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd")
+
   def using[A <: { def close():Unit },B]( resource:A )( f:A => B ) = try(f(resource)) finally(resource.close)
 
   override def init:Unit = {
@@ -97,6 +99,7 @@ class Servlet extends HttpServlet {
     visitor.visit(document)
     val params = visitor.getData.asScala.map { case (key, value) =>
       (key, value.asScala.toSeq match {
+        case Seq(x:String) if key == "date" => datePattern.parseDateTime(x).toDate
         case Seq(x) => x
         case x => x.asJava
       })

@@ -54,6 +54,7 @@
   <div class="jumbotron{%if jumbotron_class%} {{jumbotron_class}}{%endif%}">
     <div class="container">
       <h1>{{title}}</h1>
+      {%if date%}<p>{{datetimeformat(date, "yyyy年M月d日")}}</p>{%endif%}
       <p>{{summary}}</p>
     </div>
   </div>
