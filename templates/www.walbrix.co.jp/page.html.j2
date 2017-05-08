@@ -117,7 +117,7 @@
 
     {%if !cookies["_ga"]%}
     ga('set', {
-      'dimension1':'{{request.getRequestURI|escapejs}}',
+      'dimension1':'{{request.requestURI|escapejs}}',
       'dimension2':'{{request.getHeader("Referer")|escapejs}}'
     });
     {%endif%}
