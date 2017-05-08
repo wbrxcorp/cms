@@ -5,6 +5,7 @@ date: 2013-08-16
 page_image: /blog/javascript.jpg
 template: www.walbrix.co.jp/page.html.j2
 jumbotron_class: simple
+adsense: true
 ---
 <form class="form-horizontal">
   <div class="control-group">
