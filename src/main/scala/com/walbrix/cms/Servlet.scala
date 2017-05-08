@@ -109,19 +109,11 @@ class Servlet extends HttpServlet {
       case None => Map()
     })
 
-/*
-    val queryParams = (params.getOrElse("query_params", Nil) match {
-      case qp:java.util.Collection[String] => qp.asScala
-      case qp:String => Seq(qp)
-    }).map { name =>
-      Option(request.getParameter(name)).map((name, _))
-    }.flatten.toMap
-*/
     val jinjava = new com.hubspot.jinjava.Jinjava()
     jinjava.setResourceLocator(resourceLocator)
     val template = params.get("template").getOrElse("default.html")
     val renderedContent = jinjava.render(s"""{% include "${template}" %}""", params.asJava)
-    produceCacheControlHeaders(markdownFile, response)
+    //produceCacheControlHeaders(markdownFile, response)
     response.setContentType("text/html")
     response.setCharacterEncoding("UTF-8")
     using(response.getWriter)(_.write(renderedContent))
@@ -167,11 +159,7 @@ class Servlet extends HttpServlet {
       if (name.endsWith(".html")) { // 存在しない.htmlファイルにリクエストには代わりに対応するMarkdownファイルをHTML変換して返す
         val mdFileToServe = new File(fileToServe.getPath.replaceFirst("\\.html$", ".md"))
         if (mdFileToServe.isFile) {
-          if (isCacheValid(mdFileToServe, req)) {
-            res.setStatus(HttpServletResponse.SC_NOT_MODIFIED)
-          } else {
-            serveMarkdownAsHtml(name, mdFileToServe, req, res)
-          }
+          serveMarkdownAsHtml(name, mdFileToServe, req, res)
           return
         }
       }
