@@ -19,6 +19,9 @@
 つまりワルブリックス株式会社とは、嶋田([→詳しくはこちら](https://www.walbrix.co.jp/md/)。表側からはリンクされていません)
 の会社です。
 
+- [ITの戦場で傷ついてしまった戦士の休息場](https://www.wantedly.com/projects/6626) (Wantedlyに載せているネタ求人)
+- [職種・スキル](https://crowdworks.jp/public/employees/38920/occupations) (実際にはクラウドワークス経由のオファーを引き受けてはいません)
+
 ### 社名の由来
 
 ワルブリックスという社名は [Walbrix](https://www.walbrix.net) という [Gentoo Linux](https://www.gentoo.org/)ベースの仮想サーバ運用に特化した自作オペレーティングシステムから取っており、Walbrixは単に W と B を含む適当に言いやすいまだ存在しない言葉を作ってつけた名前です。WBはこのOSの名前が決まるまえに仮に*W*hite*B*ase(ホワイトベース)と呼んでいたことにちなみます。
