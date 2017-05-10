@@ -2,7 +2,7 @@
 category: ブログ
 title: 64bit Windowsで 32bitのODBCドライバを使う
 summary: 32bitのODBCドライバをインストールしたら、設定も32bitのODBCアドミニストレータでしなければいけないという話
-date: 2007-12-04日
+date: 2007-12-04
 page_image: /blog/windows.jpg
 template: www.walbrix.co.jp/page.html.j2
 jumbotron_class: simple
