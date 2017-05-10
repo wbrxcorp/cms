@@ -112,6 +112,27 @@ class Servlet extends HttpServlet {
       case None => Map()
     })
 
+    // redirect_toが指定されていれば無条件でリダイレクトする
+    params.get("redirect_permanent").foreach { url =>
+      if (url.isInstanceOf[String]) {
+        response.setStatus(301);
+        response.setHeader( "Location", url.asInstanceOf[String] );
+        response.setHeader( "Connection", "close" );
+      } else {
+        response.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "redirect url must be a string")
+      }
+      return
+    }
+
+    params.get("redirect").foreach { url =>
+      if (url.isInstanceOf[String]) {
+        response.sendRedirect(url.asInstanceOf[String])
+      } else {
+        response.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "redirect url must be a string")
+      }
+      return
+    }
+
     val jinjava = new com.hubspot.jinjava.Jinjava()
     jinjava.setResourceLocator(resourceLocator)
     val template = params.get("template").getOrElse("default.html")
