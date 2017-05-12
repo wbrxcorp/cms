@@ -7,6 +7,7 @@ template: www.walbrix.co.jp/page.html.j2
 jumbotron_class: simple
 adsense: true
 ---
+{%raw%}
 ng-options属性の書式は一見独特で最初はわかりにくいので、具体的な例をいくつか挙げることで理解の助けにしてもらおうと思う。
 
 公式ドキュメント: [AngularJS: API: select](http://docs.angularjs.org/api/ng/directive/select)
@@ -26,6 +27,7 @@ $scope.selectedYear = 2014;
 
 ```
 <select ng-model="selectedYear" ng-options="year for year in years"></select>
+選択された値 = {{ selectedYear }}
 ```
 
 <div class="row">
@@ -180,3 +182,4 @@ jmonthsオブジェクトと上のスクリーンショットを見比べてみ�
 選択肢の表示順がランダムで構わないシチュエーションというのは滅多にないはずなので、結論としてこの書式は使い道がない。
 
 参考 [AngularJSでselect要素のデータバインド - Qiita](http://qiita.com/HamaTech/items/7209bb686650ae61b1eb)
+{%endraw%}

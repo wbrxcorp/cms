@@ -109,7 +109,7 @@ class Servlet extends HttpServlet {
 
     val attributes = documentAttributes ++ Map (
       "request"->request,
-      "content"->s"{%raw%}${content}{%endraw%}",
+      "content"->content,
       "name"->name
     ) ++ (Option(request.getCookies) match {
       case Some(cookies) => Map("cookies" -> cookies.map { cookie => (cookie.getName, cookie ) }.toMap.asJava)
