@@ -92,20 +92,24 @@ class Servlet extends HttpServlet {
   }
 
   private def serveMarkdownAsHtml(name:String, markdownFile:File, request:HttpServletRequest, response:HttpServletResponse):Unit = {
+    // TODO: read prefix attributes
     val parser = com.vladsch.flexmark.parser.Parser.builder(flexmarkOptions).extensions(flexmarkExtensions).build
     val document = parser.parse(IOUtils.toString(new java.io.FileInputStream(markdownFile), "UTF-8"))
-    val visitor = new com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor()
     val content = com.vladsch.flexmark.html.HtmlRenderer.builder(flexmarkOptions).extensions(flexmarkExtensions).build.render(document)
+
+    val visitor = new com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor()
     visitor.visit(document)
-    val params = visitor.getData.asScala.map { case (key, value) =>
+    val documentAttributes = visitor.getData.asScala.map { case (key, value) =>
       (key, value.asScala.toSeq match {
         case Seq(x:String) if key == "date" => datePattern.parseDateTime(x).toDate
         case Seq(x) => x
         case x => x.asJava
       })
-    }.toMap ++ Map (
+    }.toMap
+
+    val attributes = documentAttributes ++ Map (
       "request"->request,
-      "content"->content,
+      "content"->s"{%raw%}${content}{%endraw%}",
       "name"->name
     ) ++ (Option(request.getCookies) match {
       case Some(cookies) => Map("cookies" -> cookies.map { cookie => (cookie.getName, cookie ) }.toMap.asJava)
@@ -113,7 +117,7 @@ class Servlet extends HttpServlet {
     })
 
     // redirect_toが指定されていれば無条件でリダイレクトする
-    params.get("redirect_permanent").foreach { url =>
+    attributes.get("redirect_permanent").foreach { url =>
       if (url.isInstanceOf[String]) {
         response.setStatus(301);
         response.setHeader( "Location", url.asInstanceOf[String] );
@@ -124,7 +128,7 @@ class Servlet extends HttpServlet {
       return
     }
 
-    params.get("redirect").foreach { url =>
+    attributes.get("redirect").foreach { url =>
       if (url.isInstanceOf[String]) {
         response.sendRedirect(url.asInstanceOf[String])
       } else {
@@ -135,8 +139,8 @@ class Servlet extends HttpServlet {
 
     val jinjava = new com.hubspot.jinjava.Jinjava()
     jinjava.setResourceLocator(resourceLocator)
-    val template = params.get("template").getOrElse("default.html")
-    val renderedContent = jinjava.render(s"""{% include "${template}" %}""", params.asJava)
+    val template = attributes.get("template").getOrElse("default.html")
+    val renderedContent = jinjava.render(s"""{% include "${template}" %}""", attributes.asJava)
     //produceCacheControlHeaders(markdownFile, response)
     response.setContentType("text/html")
     response.setCharacterEncoding("UTF-8")
