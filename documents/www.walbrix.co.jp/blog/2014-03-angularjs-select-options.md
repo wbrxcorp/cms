@@ -1,7 +1,8 @@
 ---
+category: ブログ
 title: AngularJSでselect要素にoptionをぶら下げる色々な方法
 summary: AngularJSではselect要素による選択フィールドもスコープ変数にバインドすることが出来る。その際、option要素の代わりに ng-options属性で選択肢を提供するための書式を解説する。
-date: 2014-02-13
+date: 2014-03-29
 page_image: /blog/img/angularjs.png
 template: www.walbrix.co.jp/page.html.j2
 jumbotron_class: simple
