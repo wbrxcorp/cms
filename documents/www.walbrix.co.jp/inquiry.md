@@ -5,4 +5,4 @@ summary: 当社への各種お問い合わせにはこちらのフォームを�
 ---
 下記フォームに必要事項を入力して送信してください。 [<i class="fa fa-file-code-o" aria-hidden="true"></i>](https://github.com/wbrxcorp/cms/blob/main/src/main/scala/com/walbrix/cms/InquiryServlet.scala)
 
-メールにてお問い合わせをされる場合は [info17@walbrix.co.jp](mailto:info17@walbrix.co.jp) までお願いいたします。
+メールにてお問い合わせをされる場合は [info17@walbrix.co.jp](mailto:info17@walbrix.co.jp) までお願いいたします。セールス目的のご連絡には返信いたしませんのでご了承ください。
