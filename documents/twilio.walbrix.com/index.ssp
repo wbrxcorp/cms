@@ -8,7 +8,7 @@
   val response = if (accountSid != request.getParameter("AccountSid")) {
     <Reject />
   } else if (blackList.exists(_ == from)) {
-    <Reject />
+    <Reject reason="rejected"/>
   } else {
     val to = Option(request.getParameter("To")).getOrElse("Unknown")
     val parsedRedirectMap = redirectMap.map { line =>
