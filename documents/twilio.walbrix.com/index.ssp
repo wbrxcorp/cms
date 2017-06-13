@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<%@ val request:javax.servlet.http.HttpServletRequest %>
+<%@ val accountSid:String %>
+<%@ val redirectMap:Seq[String] %>
+<%@ val blackList:Seq[String] %>
+<%
+  val from = Option(request.getParameter("From")).getOrElse("Unknown")
+  val response = if (Option(accountSid) != Option(request.getParameter("AccountSid"))) {
+    <Reject />
+  } else if (blackList.exists(_ == from)) {
+    <Reject />
+  } else {
+    val to = Option(request.getParameter("To")).getOrElse("Unknown")
+    val parsedRedirectMap = redirectMap.map { line =>
+      val splitted = line.split("=", 2)
+      (splitted(0).trim,splitted(1).trim)
+    }.toMap
+    parsedRedirectMap.get(to).orElse(parsedRedirectMap.get("default")) match {
+      case Some(redirectTo) => <Dial callerId={to}>{redirectTo}</Dial>
+      case _ => <Reject />
+    }
+  }
+%>
+<Response>${response}</Response>

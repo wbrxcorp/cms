@@ -59,6 +59,8 @@ class Servlet extends HttpServlet {
   )
 
   val datePattern = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd")
+  val scalateEngine = new org.fusesource.scalate.TemplateEngine
+
 
   def using[A <: { def close():Unit },B]( resource:A )( f:A => B ) = try(f(resource)) finally(resource.close)
 
@@ -91,23 +93,43 @@ class Servlet extends HttpServlet {
     }
   }
 
-  private def serveMarkdownAsHtml(name:String, markdownFile:File, request:HttpServletRequest, response:HttpServletResponse):Unit = {
-    // TODO: read prefix attributes
+  private def parseMarkdownFile(markdownFile:File):com.vladsch.flexmark.ast.Node = {
     val parser = com.vladsch.flexmark.parser.Parser.builder(flexmarkOptions).extensions(flexmarkExtensions).build
-    val document = parser.parse(IOUtils.toString(new java.io.FileInputStream(markdownFile), "UTF-8"))
-    val content = com.vladsch.flexmark.html.HtmlRenderer.builder(flexmarkOptions).extensions(flexmarkExtensions).build.render(document)
+    using(new java.io.FileInputStream(markdownFile)) { is => parser.parse(IOUtils.toString(is, "UTF-8")) }
+  }
 
+  private def extractDocumentAttributes(document:com.vladsch.flexmark.ast.Node, useJavaTypes:Boolean = true):Map[String,AnyRef] = {
     val visitor = new com.vladsch.flexmark.ext.yaml.front.matter.AbstractYamlFrontMatterVisitor()
     visitor.visit(document)
-    val documentAttributes = visitor.getData.asScala.map { case (key, value) =>
-      (key, value.asScala.toSeq match {
+    //pprint.pprintln(visitor.getData)
+    visitor.getData.asScala.map { case (key, value) =>
+      (key, value.asScala match {
         case Seq(x:String) if key == "date" => datePattern.parseDateTime(x).toDate
         case Seq(x) => x
-        case x => x.asJava
+        case x => if (useJavaTypes) x.asJava else x
       })
     }.toMap
+  }
 
-    val attributes = documentAttributes ++ Map (
+  private def serveSsp(name:String, fileToServe:File, markdownFile:Option[File], request:HttpServletRequest, response:HttpServletResponse):Unit = {
+    val documentAttributes = markdownFile.map { file =>
+      extractDocumentAttributes(parseMarkdownFile(file), false)
+    }.getOrElse(Map())
+    val renderedContent = scalateEngine.layout(org.fusesource.scalate.TemplateSource.fromFile(fileToServe), documentAttributes ++ Map (
+      "request"->request,
+      "name"->name
+    ))
+    response.setContentType(documentAttributes.get("contentType").getOrElse("text/html").toString)
+    response.setCharacterEncoding("UTF-8")
+    using(response.getWriter)(_.write(renderedContent))
+  }
+
+  private def serveMarkdownAsHtml(name:String, markdownFile:File, request:HttpServletRequest, response:HttpServletResponse):Unit = {
+    // TODO: read prefix attributes
+    val document = parseMarkdownFile(markdownFile)
+    val content = com.vladsch.flexmark.html.HtmlRenderer.builder(flexmarkOptions).extensions(flexmarkExtensions).build.render(document)
+
+    val attributes = extractDocumentAttributes(document) ++ Map (
       "request"->request,
       "content"->content,
       "name"->name
@@ -147,36 +169,46 @@ class Servlet extends HttpServlet {
     using(response.getWriter)(_.write(renderedContent))
   }
 
+  private def determineNameAndFile(req:HttpServletRequest, res:HttpServletResponse):Option[(String, File)] = {
+    if (!documentPath.isDirectory) throw new FileNotFoundException(s"Document path ${documentPath} not found")
+
+    // else
+    val requestURI = req.getRequestURI
+    val suggestedRootPrefix = rootPrefix.getOrElse(req.getServerName)
+
+    // nameを確定する
+    val givenName = (if (new File(documentPath, suggestedRootPrefix).isDirectory) { // ルートプレフィクス候補に該当するディレクトリがあるか？
+      new File(suggestedRootPrefix, requestURI)
+    } else {
+      new File(requestURI)
+    }).getPath
+
+    val name = if (new File(documentPath, givenName).isDirectory) {
+      if (!requestURI.endsWith("/")) {
+        // ディレクトリに対するアクセスの場合で、/ で終端していない場合は終端させるようリダイレクトする
+        res.sendRedirect(s"${req.getRequestURL}/")
+        return None
+      }
+      Seq("index.ssp", "index.html").map(new File(givenName, _).getPath).filter(name=>name == "index.html" || name.endsWith("/index.html") || new File(documentPath, name).isFile).headOption.getOrElse(throw new SecurityException("Forbidden"))
+    } else {
+      givenName
+    }
+
+    Some(name, new File(documentPath, name))
+
+  }
+
   override protected def doGet(req:HttpServletRequest, res:HttpServletResponse):Unit = {
     try {
-      if (!documentPath.isDirectory) throw new FileNotFoundException(s"Document path ${documentPath} not found")
-
-      // else
-      val requestURI = req.getRequestURI
-      val suggestedRootPrefix = rootPrefix.getOrElse(req.getServerName)
-
-      // nameを確定する
-      val givenName = (if (new File(documentPath, suggestedRootPrefix).isDirectory) { // ルートプレフィクス候補に該当するディレクトリがあるか？
-        new File(suggestedRootPrefix, requestURI)
-      } else {
-        new File(requestURI)
-      }).getPath
-
-      val name = if (new File(documentPath, givenName).isDirectory) {
-        if (!requestURI.endsWith("/")) {
-          // ディレクトリに対するアクセスの場合で、/ で終端していない場合は終端させるようリダイレクトする
-          res.sendRedirect(s"${req.getRequestURL}/")
-          return
-        }
-        new File(givenName, "index.html").getPath
-      } else {
-        givenName
-      }
-
-      val fileToServe = new File(documentPath, name)
+      val (name, fileToServe) = determineNameAndFile(req, res).getOrElse(return) // 内部ドキュメント名と実ファイルオブジェクトを決定する。リダイレクトの場合はそのままリターン
 
       if (fileToServe.isFile) {
-        if (isCacheValid(fileToServe, req)) {
+        if (name.endsWith(".ssp")) { // Scala Server Pagesの処理
+          val mdFileToServe = Option(new File(fileToServe.getPath.replaceFirst("\\.ssp$", ".md"))).filter(_.isFile)
+
+          serveSsp(name, fileToServe, mdFileToServe, req, res)
+        }
+        else if (isCacheValid(fileToServe, req)) { // static contents
           res.setStatus(HttpServletResponse.SC_NOT_MODIFIED)
         } else {
           serveStaticFile(fileToServe, res)
@@ -192,10 +224,29 @@ class Servlet extends HttpServlet {
         }
       }
       // else
-      res.sendError(HttpServletResponse.SC_NOT_FOUND, s"${requestURI} not found.")
+      res.sendError(HttpServletResponse.SC_NOT_FOUND, s"${req.getRequestURI} not found.")
     }
     catch {
       case e:FileNotFoundException => res.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage)
+      case e:SecurityException => res.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage)
+    }
+  }
+
+  override protected def doPost(req:HttpServletRequest, res:HttpServletResponse):Unit = {
+    try {
+      val (name, fileToServe) = determineNameAndFile(req, res).getOrElse(return) // 内部ドキュメント名と実ファイルオブジェクトを決定する。リダイレクトの場合はそのままリターン
+      if (!fileToServe.isFile) throw new FileNotFoundException()
+      if (!name.endsWith(".ssp")) { //
+        res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED) // ssp以外はPOST禁止
+        return
+      }
+      //else
+      val mdFileToServe = Option(new File(fileToServe.getPath.replaceFirst("\\.ssp$", ".md"))).filter(_.isFile)
+      serveSsp(name, fileToServe, mdFileToServe, req, res)
+    }
+    catch {
+      case e:FileNotFoundException => res.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage)
+      case e:SecurityException => res.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage)
     }
   }
 }
