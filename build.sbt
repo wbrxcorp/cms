@@ -3,7 +3,7 @@ enablePlugins(JettyPlugin)
 org.ensime.EnsimeCoursierKeys.ensimeServerVersion in ThisBuild := "2.0.0-M1"
 name := "cms"
 scalaVersion := "2.12.2"
-version := "0.20170501"
+version := "0.20170613"
 
 val sbtcp = taskKey[Unit]("sbt-classpath")
 

@@ -5,7 +5,7 @@
 <%@ val blackList:Seq[String] %>
 <%
   val from = Option(request.getParameter("From")).getOrElse("Unknown")
-  val response = if (Option(accountSid) != Option(request.getParameter("AccountSid"))) {
+  val response = if (accountSid != request.getParameter("AccountSid")) {
     <Reject />
   } else if (blackList.exists(_ == from)) {
     <Reject />

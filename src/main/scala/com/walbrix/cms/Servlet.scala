@@ -202,7 +202,7 @@ class Servlet extends HttpServlet {
     try {
       val (name, fileToServe) = determineNameAndFile(req, res).getOrElse(return) // 内部ドキュメント名と実ファイルオブジェクトを決定する。リダイレクトの場合はそのままリターン
 
-      if (fileToServe.isFile) {
+      if (!name.endsWith(".md")/*markdownは見せない。見せたくないものが書いてあるかもしれないしクロールされると重複コンテンツになる*/ && fileToServe.isFile) {
         if (name.endsWith(".ssp")) { // Scala Server Pagesの処理
           val mdFileToServe = Option(new File(fileToServe.getPath.replaceFirst("\\.ssp$", ".md"))).filter(_.isFile)
 
