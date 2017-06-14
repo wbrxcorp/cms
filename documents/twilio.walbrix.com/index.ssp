@@ -25,7 +25,7 @@
       }
     } else {
       pstnToSipMap.get(to).filter(_ != "default").orElse(pstnToSipMap.get("default")) match {
-        case Some(redirectTo) => <Dial callerId={from}>{redirectTo}</Dial>
+        case Some(redirectTo) => <Dial callerId={from}><Sip>{redirectTo}</Sip></Dial>
         case _ => <Reject />
       }
     }
