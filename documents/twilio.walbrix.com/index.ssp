@@ -11,13 +11,23 @@
     <Reject reason="rejected"/>
   } else {
     val to = Option(request.getParameter("To")).getOrElse("Unknown")
-    val parsedRedirectMap = redirectMap.map { line =>
+    val pstnToSipMap = redirectMap.map { line =>
       val splitted = line.split("=", 2)
       (splitted(0).trim,splitted(1).trim)
     }.toMap
-    parsedRedirectMap.get(to).orElse(parsedRedirectMap.get("default")) match {
-      case Some(redirectTo) => <Dial callerId={to}>{redirectTo}</Dial>
-      case _ => <Reject />
+    val sipToPstnMap = pstnToSipMap.map { case (k, v) => (v, k) }.toMap
+
+    if (to.startsWith("sip:")) {
+      val toNum = to.substring(4).split("@", 2)(0).replaceFirst("^0", "+81")
+      sipToPstnMap.get(from).filter(_ != "default").orElse(sipToPstnMap.get("default")) match {
+        case Some(fromNum) => <Dial callerId={fromNum}>{toNum}</Dial>
+        case _ => <Reject />
+      }
+    } else {
+      pstnToSipMap.get(to).filter(_ != "default").orElse(pstnToSipMap.get("default")) match {
+        case Some(redirectTo) => <Dial callerId={from}>{redirectTo}</Dial>
+        case _ => <Reject />
+      }
     }
   }
 %>

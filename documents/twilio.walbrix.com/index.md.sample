@@ -5,7 +5,8 @@ blackList:
   - +81312345678
   - +81398765432
 redirectMap:
-  - +815012345678=81-90-1234-5678
-  - +815054329876=81-90-1234-4567
-  - default=81-80-1234-5678
+  - +815012345678=12345678@yourdomain.sip.us1.twilio.com
+  - +815054329876=54329876@yourdomain.sip.us1.twilio.com
+  - +815011112222=default
+  - default=11112222@yourdomain.sip.us1.twilio.com
 ---
